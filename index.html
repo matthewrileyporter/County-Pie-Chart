@@ -1,0 +1,80 @@
+<html>
+<body style="height: auto; overflow: hidden; padding: 20px;">
+    <meta name="auto_height" content="true" /><meta name="auto_width" content="true" />
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div id="dashboard_div" style="border: 1px solid #ccc; margin-top: 1em; background-color:white">
+  
+  <table class="columns">
+    <tr>
+    <td>
+        <div id="County_div"></div>
+      </td>
+      <td>
+        <div id="MinorityLed_div"></div>
+      </td>
+    </tr><tr>
+      <td>
+        <div id="chart_div" style="padding-top: 15px"></div>
+      </td><td>
+        <div id="table_div" style="padding-top: 30px"></div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart', 'table', 'gauge', 'controls']});
+  google.charts.setOnLoadCallback(drawMainDashboard);
+
+  function drawMainDashboard() {
+    var dashboard = new google.visualization.Dashboard(
+        document.getElementById('dashboard_div'));
+      
+    var County = new google.visualization.ControlWrapper({
+      'controlType': 'CategoryFilter',
+      'containerId': 'County_div',
+      'options': {
+        'filterColumnIndex': 0,
+        'ui': {
+          'labelStacking': 'vertical',
+          'label': 'County:',
+            'allowTyping': false,
+          'allowMultiple': false
+        }
+      }
+    });
+      
+    var pie = new google.visualization.ChartWrapper({
+      'chartType': 'PieChart',
+      'containerId': 'chart_div',
+      'options': {
+        'width': 300,
+        'height': 300,
+        'legend': 'none',
+        'chartArea': {'left': 15, 'top': 15, 'right': 0, 'bottom': 0},
+        'pieSliceText': 'label'
+      },
+      'view': {'columns': [0, 1]}
+    });
+    var table = new google.visualization.ChartWrapper({
+      'chartType': 'Table',
+      'containerId': 'table_div',
+      'options': {
+      }
+    });
+    var data = google.visualization.arrayToDataTable([
+      [' County Name', '# of active companies'],
+      ['Bucks', 21],
+      ['Chester', 37],
+      ['Delaware', 14],
+      ['Montgomery', 51],
+      ['Philadelphia', 106],
+    ]);
+    dashboard.bind([County], [pie, table]);
+    dashboard.draw(data);
+  }
+</script>
+  </body>
+</html>
